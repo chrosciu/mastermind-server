@@ -10,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,14 +29,11 @@ public class SessionControllerTest {
     public void shouldCreateSessionAndReturnId() {
         String someSessionId = "baadf00d";
         when(sessionService.createSessionAndReturnId()).thenReturn(Mono.just(someSessionId));
-        byte[] body = webTestClient
+        webTestClient
                 .post()
                 .uri("/session")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody()
-                .returnResult().getResponseBody();
-        String bodyAsString = new String(body);
-        assertEquals(someSessionId, bodyAsString);
+                .expectBody().equals(someSessionId);
     }
 }
