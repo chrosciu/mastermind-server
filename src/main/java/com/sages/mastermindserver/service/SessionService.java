@@ -20,10 +20,12 @@ public class SessionService {
     }
 
     public Mono<Void> destroySessionById(String sessionId) {
-        return null;
+        return sessionRepository.deleteById(sessionId);
     }
 
     public Mono<String> getResultForGivenSessionIdAndSample(String sessionId, String sample) {
-        return null;
+        return sessionRepository.findById(sessionId)
+                .map(s -> guessService.guess(s.getCode(), sample));
+
     }
 }
