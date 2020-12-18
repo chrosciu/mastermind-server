@@ -1,5 +1,6 @@
 package com.sages.mastermindserver.service;
 
+import com.sages.mastermindserver.model.Session;
 import com.sages.mastermindserver.repository.SessionRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -13,11 +14,9 @@ public class SessionService {
     private final GuessService guessService;
 
     public Mono<String> createSessionAndReturnId() {
-        //get code from guess service
-        //build Session object
-        //save Session object
-        //return id of saved object
-        return null;
+        return sessionRepository
+                .save(Session.builder().code(guessService.code()).build())
+                .map(Session::getId);
     }
 
     public Mono<Void> destroySessionById(String sessionId) {
